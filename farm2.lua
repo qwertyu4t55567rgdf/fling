@@ -79,3 +79,7 @@ anim2.Completed:Connect(function()
 		end
 	end)
 end)
+
+while wait(600) do
+	plr.Character.Humanoid.Jump = true
+end
