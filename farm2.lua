@@ -1,9 +1,6 @@
-local plr = game.Players.LocalPlayer
 local tween = game:GetService("TweenService")
-
-local config1 = {
-	CFrame = CFrame.new(-4475, 3, -363)
-}
+local plr = game:GetService("Players").LocalPlayer
+local run = game:GetService("RunService")
 
 local speed = 0
 
@@ -21,30 +18,27 @@ elseif distance < 1000 then
 	speed = 30
 end
 
-local info1 = TweenInfo.new(speed, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-local anim1 = tween:Create(plr.Character.HumanoidRootPart, info1, config1)
-
-anim1:Play()
-
-local config2 = {
-	CFrame = CFrame.new(-4467, -45, -392)
+local config1 = {
+	CFrame = CFrame.new(-4475, 3, -363)
 }
 
+local config2 = {
+	CFrame.new(-4469, -21, -375)
+}
+
+local info1 = TweenInfo.new(speed, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
 local info2 = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
 
+local anim1 = tween:Create(plr.Character.HumanoidRootPart, info1, config1)
 local anim2 = tween:Create(plr.Character.HumanoidRootPart, info2, config2)
+
+anim1:Play()
 
 anim1.Completed:Connect(function()
 	anim2:Play()
 end)
 
-anim2.Completed:Connect(function()
-	plr.Character.HumanoidRootPart.CFrame = CFrame.new(-4474, -22, -371)
-	
-	
-	
-	local run = game:GetService("RunService")
-
+local function farm()
 	local AutoClaimAllowanceCoolDown = false
 	local AutoClaimAllowanceType = "Near"
 
@@ -58,7 +52,6 @@ anim2.Completed:Connect(function()
 						if Distance < Studs then
 							Studs = Distance
 							Part = v:FindFirstChild("MainPart")
-							Part.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position + plr.Character.HumanoidRootPart.CFrame.LookVector * 5)
 						end
 					end
 				end
@@ -78,6 +71,12 @@ anim2.Completed:Connect(function()
 			end
 		end
 	end)
+end
+
+anim2.Completed:Connect(function()
+	wait(1)
+	plr.Character.HumanoidRootPart.CFrame = CFrame.new(-4469, -45, -386)
+	farm()
 end)
 
 while wait(600) do
