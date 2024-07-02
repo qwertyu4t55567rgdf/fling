@@ -74,7 +74,7 @@ local function farm()
                     coroutine.wrap(function()
                         while playerData.NextAllowance.Value == 0 do
                             plr.Character.HumanoidRootPart.CFrame = CFrame.new(ATM.Position, ATM.CFrame.LookVector * -5)
-                            wait(0) -- Added wait to prevent infinite loop and improve performance
+                            wait() -- Added wait to prevent infinite loop and improve performance
                         end
                         ReplicatedStorage.Events.CLMZALOW:InvokeServer(ATM)
                         wait(0.5)
