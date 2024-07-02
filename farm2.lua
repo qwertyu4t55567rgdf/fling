@@ -54,6 +54,9 @@ local function farm()
 						if Distance < Studs then
 							Studs = Distance
 							Part = v:FindFirstChild("MainPart")
+							repeat
+								plr.Character.HumanoidRootPart.CFrame = CFrame.new(Part.Position, Part.CFrame.LookVector * -5)
+							until game:GetService("ReplicatedStorage").PlayerbaseData2[game:GetService("Players").LocalPlayer.Name].NextAllowance.Value ~= 0
 						end
 					end
 				end
@@ -81,6 +84,6 @@ anim2.Completed:Connect(function()
 	farm()
 end)
 
-while wait(600) do
+while wait(60) do
 	plr.Character.Humanoid.Jump = true
 end
