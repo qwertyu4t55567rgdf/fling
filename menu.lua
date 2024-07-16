@@ -1159,7 +1159,6 @@ ucstop.CornerRadius = UDim.new(0, 8)
 local function script14l()
 	local speed;
 
-	local plr = game:GetService("Players").LocalPlayer
 	repeat task.wait() until plr.Character
 	local humRoot = plr.Character:WaitForChild("HumanoidRootPart")
 	plr.Character:WaitForChild("Humanoid").AutoRotate = false
@@ -1168,7 +1167,7 @@ local function script14l()
 	velocity.MaxTorque = math.huge
 	velocity.AngularVelocity = Vector3.new(0, speed, 0)
 	velocity.Parent = humRoot
-	velocity.Name = "Spinbot" 
+	velocity.Name = "Spinbot"
 	
 	local text3 = control2.Text
 
@@ -1197,3 +1196,31 @@ local function script14l()
 end
 
 start.MouseButton1Click:Connect(script14l)
+
+local colors = {
+	Color3.new(0.133333, 1, 0),
+	Color3.new(0, 0.0666667, 1),
+	Color3.new(1, 0, 0),
+	Color3.new(1, 0, 0.917647),
+	Color3.new(0, 0.815686, 1),
+	Color3.new(1, 0.882353, 0),
+	Color3.new(1, 1, 1)
+}
+
+local tweenInfo = TweenInfo.new(
+	1,
+	Enum.EasingStyle.Linear,
+	Enum.EasingDirection.InOut
+)
+
+local function animateRainbow()
+	while true do
+		for _, color in ipairs(colors) do
+			local tween = tween:Create(textname, tweenInfo, {TextColor3 = color})
+			tween:Play()
+			tween.Completed:Wait()
+		end
+	end
+end
+
+animateRainbow()
