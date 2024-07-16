@@ -3,6 +3,8 @@ local input = game:GetService("UserInputService")
 local run = game:GetService("RunService")
 local plr = game:GetService("Players").LocalPlayer
 
+local SpeedSpin = 0
+
 local gui = Instance.new("ScreenGui")
 
 gui.Parent = game.CoreGui
@@ -889,6 +891,11 @@ save3.Text = "Save"
 save3.TextColor3 = Color3.new(0, 0, 0)
 save3.Visible = true
 
+local ucsb3 = Instance.new("UICorner")
+
+ucsb3.Parent = save3
+ucsb3.CornerRadius = UDim.new(0, 8)
+
 local function script13l()
 	local text = target.Text
 	
@@ -1156,43 +1163,42 @@ local ucstop = Instance.new("UICorner")
 ucstop.Parent = stop
 ucstop.CornerRadius = UDim.new(0, 8)
 
-local function script14l()
-	local speed;
-
+local function spin()
 	repeat task.wait() until plr.Character
 	local humRoot = plr.Character:WaitForChild("HumanoidRootPart")
 	plr.Character:WaitForChild("Humanoid").AutoRotate = false
-	local velocity = Instance.new("AngularVelocity")
-	velocity.Attachment0 = humRoot:WaitForChild("RootAttachment")
-	velocity.MaxTorque = math.huge
-	velocity.AngularVelocity = Vector3.new(0, speed, 0)
-	velocity.Parent = humRoot
-	velocity.Name = "Spinbot"
-	
-	local text3 = control2.Text
-
-	if text3 == "" then
-		control3.Text = "Error"
-	else
-		local number3 = tonumber(text3)
-
-		if number3 == nil then
-			control3.Text = "Error"
-		else
-			if number3 > 1000 then
-				speed = 1000
-			elseif number3 < 1 then
-				speed = 1
-			else
-				speed = number3
-			end
-		end
+	local velocity = humRoot:FindFirstChild("Spinbot")
+	if not velocity then
+		velocity = Instance.new("AngularVelocity")
+		velocity.Attachment0 = humRoot:WaitForChild("RootAttachment")
+		velocity.MaxTorque = math.huge
+		velocity.Parent = humRoot
+		velocity.Name = "Spinbot"
 	end
-	
+	velocity.AngularVelocity = Vector3.new(0, SpeedSpin, 0)
 	stop.MouseButton1Click:Connect(function()
 		velocity:Destroy()
-		plr.Character:WaitForChild("Humanoid").AutoRotate = true
+		plr.Character.Humanoid.AutoRotate = true
 	end)
+end
+
+local function script14l()
+	local gettext = control3.Text
+	local number3 = tonumber(gettext)
+
+	if not number3 then
+		control3.Text = "Error"
+		return
+	elseif number3 > 500 then
+		SpeedSpin = 500
+	elseif number3 < 1 then
+		SpeedSpin = 1
+	else
+		SpeedSpin = number3
+	end
+
+	spin()
+	print(SpeedSpin)
 end
 
 start.MouseButton1Click:Connect(script14l)
