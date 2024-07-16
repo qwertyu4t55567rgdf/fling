@@ -892,14 +892,14 @@ save3.Visible = true
 local function script13l()
 	local text = target.Text
 	
-	getgenv().AimPart = "" -- For R15 Games: {UpperTorso, LowerTorso, HumanoidRootPart, Head} | For R6 Games: {Head, Torso, HumanoidRootPart}
-	getgenv().AimlockToggleKey = "Y" -- Toggles Aimbot On/Off 
-	getgenv().AimRadius = 50 -- How far away from someones character you want to lock on at
-	getgenv().ThirdPerson = false -- Locking onto someone in your Third Person POV
-	getgenv().FirstPerson = true -- Locking onto someone in your First Person POV
-	getgenv().TeamCheck = false -- Check if Target is on your Team (True means it wont lock onto your teamates, false is vice versa) (Set it to false if there are no teams)
-	getgenv().PredictMovement = true -- Predicts if they are moving in fast velocity (like jumping) so the aimbot will go a bit faster to match their speed 
-	getgenv().PredictionVelocity = 15 -- The speed of the PredictMovement feature 
+	getgenv().AimPart = ""
+	getgenv().AimlockToggleKey = "Y"
+	getgenv().AimRadius = 50
+	getgenv().ThirdPerson = false
+	getgenv().FirstPerson = true
+	getgenv().TeamCheck = false
+	getgenv().PredictMovement = true
+	getgenv().PredictionVelocity = 15
 	
 	if text == "Head" or text == "head" then
 		getgenv().AimPart = "Head"
