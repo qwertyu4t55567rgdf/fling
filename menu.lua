@@ -5,7 +5,7 @@ local plr = game:GetService("Players").LocalPlayer
 
 local gui = Instance.new("ScreenGui")
 
-gui.Parent = game.Players.LocalPlayer.PlayerGui
+gui.Parent = game.CoreGui
 gui.Name = "ScriptHub"
 gui.ResetOnSpawn = false
 
@@ -33,9 +33,6 @@ input.InputBegan:Connect(function(key)
 	end
 end)
 
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-
 local dragging = false
 local dragInput
 local dragStart
@@ -50,8 +47,8 @@ local function update(input)
 		startPos.Y.Offset + delta.Y
 	)
 
-	local tween = TweenService:Create(mainframe, TweenInfo.new(0.1), {Position = newPosition})
-	tween:Play()
+	local anim1 = tween:Create(mainframe, TweenInfo.new(0.1), {Position = newPosition})
+	anim1:Play()
 end
 
 mainframe.InputBegan:Connect(function(input)
@@ -74,7 +71,7 @@ mainframe.InputChanged:Connect(function(input)
 	end
 end)
 
-UserInputService.InputChanged:Connect(function(input)
+input.InputChanged:Connect(function(input)
 	if dragging and input == dragInput then
 		update(input)
 	end
@@ -265,27 +262,27 @@ local function script3l()
 		end
 	end
 
-	game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+	input.InputBegan:Connect(function(input, isProcessed)
 		if not isProcessed and input.KeyCode == Enum.KeyCode.Z then
 			toggleWallWalk()
 		end
 	end)
 
-	game:GetService("RunService").RenderStepped:Connect(function()
+	run.RenderStepped:Connect(function()
 		if wallWalking then
 			local camera = game.Workspace.CurrentCamera
 			local direction = camera.CFrame.LookVector
 			local moveDirection = Vector3.new(0, 0, 0)
-			if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) then
+			if input:IsKeyDown(Enum.KeyCode.W) then
 				moveDirection = moveDirection + direction
 			end
-			if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) then
+			if input:IsKeyDown(Enum.KeyCode.S) then
 				moveDirection = moveDirection - direction
 			end
-			if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) then
+			if input:IsKeyDown(Enum.KeyCode.A) then
 				moveDirection = moveDirection - camera.CFrame.RightVector
 			end
-			if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) then
+			if input:IsKeyDown(Enum.KeyCode.D) then
 				moveDirection = moveDirection + camera.CFrame.RightVector
 			end
 
@@ -356,45 +353,45 @@ local ucs5 = Instance.new("UICorner")
 ucs5.Parent =  script5
 ucs5.CornerRadius = UDim.new(0, 8)
 
-local control = Instance.new("TextBox")
+local control1 = Instance.new("TextBox")
 
-control.Parent = script5
-control.Name = "value"
-control.BackgroundColor3 = Color3.new(1, 1, 1)
-control.BackgroundTransparency = 0
-control.Size = UDim2.new(0, 60, 0, 35)
-control.Position = UDim2.new(1.067, 0, 0, 0)
-control.ClearTextOnFocus = false
-control.TextEditable = true
-control.ShowNativeInput = true
-control.PlaceholderText = "0 - 5"
-control.PlaceholderColor3 = Color3.new(0.329412, 0.329412, 0.329412)
-control.TextColor3 = Color3.new(0, 0, 0)
-control.TextScaled = false
-control.Text = ""
-control.Visible = true
+control1.Parent = script5
+control1.Name = "value"
+control1.BackgroundColor3 = Color3.new(1, 1, 1)
+control1.BackgroundTransparency = 0
+control1.Size = UDim2.new(0, 60, 0, 35)
+control1.Position = UDim2.new(1.067, 0, 0, 0)
+control1.ClearTextOnFocus = false
+control1.TextEditable = true
+control1.ShowNativeInput = true
+control1.PlaceholderText = "0 - 5"
+control1.PlaceholderColor3 = Color3.new(0.329412, 0.329412, 0.329412)
+control1.TextColor3 = Color3.new(0, 0, 0)
+control1.TextScaled = false
+control1.Text = ""
+control1.Visible = true
 
 local uctb1 = Instance.new("UICorner")
 
-uctb1.Parent = control
+uctb1.Parent = control1
 uctb1.CornerRadius = UDim.new(0, 20)
 
-local save = Instance.new("TextButton")
+local save1 = Instance.new("TextButton")
 
-save.Parent = script5
-save.Name = "savebutton"
-save.BackgroundColor3 = Color3.new(1, 1, 1)
-save.BackgroundTransparency = 0
-save.Size = UDim2.new(0, 80, 0, 35)
-save.Position = UDim2.new(1.65, 0, 0, 0)
-save.TextScaled = true
-save.Text = "Save"
-save.TextColor3 = Color3.new(0, 0, 0)
-save.Visible = true
+save1.Parent = script5
+save1.Name = "savebutton"
+save1.BackgroundColor3 = Color3.new(1, 1, 1)
+save1.BackgroundTransparency = 0
+save1.Size = UDim2.new(0, 80, 0, 35)
+save1.Position = UDim2.new(1.65, 0, 0, 0)
+save1.TextScaled = true
+save1.Text = "Save"
+save1.TextColor3 = Color3.new(0, 0, 0)
+save1.Visible = true
 
 local ucsb1 = Instance.new("UICorner")
 
-ucsb1.Parent = save
+ucsb1.Parent = save1
 ucsb1.CornerRadius = UDim.new(0, 8)
 
 local function script5l()
@@ -429,27 +426,27 @@ local function script5l()
 		value2.Value = 0
 	end)
 
-	local text = control.Text
+	local text1 = control1.Text
 
-	if text == "" then
-		control.Text = "Error"
+	if text1 == "" then
+		control1.Text = "Error"
 	else
-		local number = tonumber(text)
-		if number == nil then
-			control.Text = "Error"
+		local number1 = tonumber(text1)
+		if number1 == nil then
+			control1.Text = "Error"
 		else
-			if number > 5 then
+			if number1 > 5 then
 				light.ExposureCompensation = 5
-			elseif number < 0 then
+			elseif number1 < 0 then
 				light.ExposureCompensation = 0
 			else
-				light.ExposureCompensation = number
+				light.ExposureCompensation = number1
 			end
 		end
 	end
 end
 
-save.MouseButton1Click:Connect(script5l)
+save1.MouseButton1Click:Connect(script5l)
 
 local script6 = Instance.new("TextLabel")
 
@@ -650,7 +647,7 @@ script10.BackgroundTransparency = 0
 script10.Size = UDim2.new(0, 180, 0, 35)
 script10.Position = UDim2.new(0.025, 0, 0.103, 0)
 script10.TextScaled = true
-script10.Text = "inf pepper spray"
+script10.Text = "inf pepper spray \n (use after buy)"
 script10.TextColor3 = Color3.new(0, 0, 0)
 script10.Visible = true
 
@@ -692,30 +689,511 @@ end
 
 load10.MouseButton1Click:Connect(script10l)
 
-local colors = {
-	Color3.new(0.133333, 1, 0),
-	Color3.new(0, 0.0666667, 1),
-	Color3.new(1, 0, 0),
-	Color3.new(1, 0, 0.917647),
-	Color3.new(0, 0.815686, 1),
-	Color3.new(1, 0.882353, 0),
-	Color3.new(1, 1, 1)
-}
+local script11 = Instance.new("TextLabel")
 
-local tweenInfo = TweenInfo.new(
-	1,
-	Enum.EasingStyle.Linear,
-	Enum.EasingDirection.InOut
-)
+script11.Parent = scroll
+script11.Name = "script11"
+script11.BackgroundColor3 = Color3.new(1, 1, 1)
+script11.BackgroundTransparency = 0
+script11.Size = UDim2.new(0, 180, 0, 35)
+script11.Position = UDim2.new(0.025, 0, 0.114, 0)
+script11.TextScaled = true
+script11.Text = "Lockpick farm"
+script11.TextColor3 = Color3.new(0, 0, 0)
+script11.Visible = true
 
-local function animateRainbow()
-	while true do
-		for _, color in ipairs(colors) do
-			local tween = tween:Create(textname, tweenInfo, {TextColor3 = color})
-			tween:Play()
-			tween.Completed:Wait()
+local ucs11 = Instance.new("UICorner")
+
+ucs11.Parent = script11
+ucs11.CornerRadius = UDim.new(0, 8)
+
+local load11 = Instance.new("TextButton")
+
+load11.Parent =  script11
+load11.Name = "loads11"
+load11.BackgroundColor3 = Color3.new(1, 1, 1)
+load11.BackgroundTransparency = 0
+load11.Size = UDim2.new(0, 80, 0, 35)
+load11.Position = UDim2.new(1.1, 0, 0, 0)
+load11.TextScaled = true
+load11.Text = "Load"
+load11.TextColor3 = Color3.new(0, 0, 0)
+load11.Visible = true
+
+local ucl11 = Instance.new("UICorner")
+
+ucl11.Parent = load11
+ucl11.CornerRadius = UDim.new(0, 8)
+
+local function script11l()
+	local config = {
+		Position = UDim2.new(0.5, 0, 0.5, 0)
+	}
+
+	local info = TweenInfo.new(0.001, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1)
+
+	for i, a in pairs(game:GetDescendants()) do
+		if a.Name == "LockpickBars" then
+			a.Value = 1
+		end
+	end
+
+	plr.PlayerGui.ChildAdded:Connect(function(object)
+		if object:IsA("ScreenGui") and object.Name == "LockpickGUI" then
+			for i, a in pairs(object:GetDescendants()) do
+				if a:IsA("NumberValue") and a.Name == "PosV" then
+					a.Value = 0
+				end
+				for _, bar in pairs(object:GetDescendants()) do
+					if bar:IsA("ImageLabel") and bar.Name == "Bar" then
+						local anim = tween:Create(bar, info, config)
+						anim:Play()
+					end
+				end
+			end
+		end
+	end)
+end
+
+load11.MouseButton1Click:Connect(script11l)
+
+local script12 = Instance.new("TextLabel")
+
+script12.Parent = scroll
+script12.Name =  "script12"
+script12.BackgroundColor3 = Color3.new(1, 1, 1)
+script12.BackgroundTransparency = 0
+script12.Size = UDim2.new(0, 120, 0, 35)
+script12.Position = UDim2.new(0.025, 0, 0.125, 0)
+script12.TextScaled = true
+script12.Text = "Stomp speed"
+script12.TextColor3 = Color3.new(0, 0, 0)
+script12.Visible = true
+
+local ucs12 = Instance.new("UICorner")
+
+ucs12.Parent = script12
+ucs12.CornerRadius = UDim.new(0, 8)
+
+local control2 = Instance.new("TextBox")
+
+control2.Parent = script12
+control2.Name = "value"
+control2.BackgroundColor3 = Color3.new(1, 1, 1)
+control2.BackgroundTransparency = 0
+control2.Size = UDim2.new(0, 60, 0, 35)
+control2.Position = UDim2.new(1.067, 0, 0, 0)
+control2.Text = ""
+control2.TextColor3 = Color3.new(0, 0, 0)
+control2.PlaceholderText = "0.1 - 3"
+control2.PlaceholderColor3 = Color3.new(0.290196, 0.290196, 0.290196)
+control2.Visible = true
+
+local uctb2 = Instance.new("UICorner")
+
+uctb2.Parent = control2
+uctb2.CornerRadius = UDim.new(0, 20)
+
+local save2 = Instance.new("TextButton")
+
+save2.Parent = script12
+save2.Name = "savebutton"
+save2.BackgroundColor3 =  Color3.new(1, 1, 1)
+save2.BackgroundTransparency = 0
+save2.Size = UDim2.new(0, 80, 0, 35)
+save2.Position = UDim2.new(1.65, 0, 0, 0)
+save2.TextScaled = true
+save2.Text = "Save"
+save2.TextColor3 = Color3.new(0, 0, 0)
+save2.Visible = true
+
+local ucsb2 = Instance.new("UICorner")
+
+ucsb2.Parent = save2
+ucsb2.CornerRadius = UDim.new(0, 8)
+
+local function script12l()
+	local stomp = game:GetService("ReplicatedStorage").Values.FinishSpeedMulti
+	
+	local text2 = control2.Text
+	
+	if text2 == "" then
+		control2.Text = "Error"
+	else
+		local number2 = tonumber(text2)
+		
+		if number2 == nil then
+			control2.Text = "Error"
+		else
+			if number2 > 3 then
+				stomp.Value = 3
+			elseif number2 < 0.1 then
+				stomp.Value = 0.1
+			else
+				stomp.Value = number2
+			end
 		end
 	end
 end
 
-animateRainbow()
+save2.MouseButton1Click:Connect(script12l)
+
+local script13 = Instance.new("TextLabel")
+
+script13.Parent = scroll
+script13.Name = "script13"
+script13.BackgroundColor3 = Color3.new(1, 1, 1)
+script13.BackgroundTransparency = 0
+script13.Size = UDim2.new(0, 220, 0, 35)
+script13.Position = UDim2.new(0.134, 0, 0.136, 0)
+script13.TextScaled = true
+script13.Text = "Aimbot v2 - key Y to activate"
+script13.TextColor3 = Color3.new(0, 0, 0)
+script13.Visible = true
+
+local ucs13 = Instance.new("UICorner")
+
+ucs13.Parent = script13
+ucs13.CornerRadius = UDim.new(0, 8)
+
+local target = Instance.new("TextBox")
+
+target.Parent = script13
+target.Name = "target"
+target.BackgroundColor3 = Color3.new(1, 1, 1)
+target.BackgroundTransparency = 0
+target.Size = UDim2.new(0, 180, 0, 35)
+target.Position = UDim2.new(-0.155, 0, 1.657, 0)
+target.TextScaled = true
+target.Text = ""
+target.PlaceholderText = "Select target"
+target.TextColor3 = Color3.new(0, 0, 0)
+target.PlaceholderColor3 = Color3.new(0.290196, 0.290196, 0.290196)
+target.Visible = true
+
+local uct = Instance.new("UICorner")
+
+uct.Parent = target
+uct.CornerRadius = UDim.new(0, 20)
+
+local save3 = Instance.new("TextButton")
+
+save3.Parent = script13
+save3.Name = "savebutton"
+save3.BackgroundColor3 = Color3.new(1, 1, 1)
+save3.BackgroundTransparency = 0
+save3.Size = UDim2.new(0, 80, 0, 35)
+save3.Position = UDim2.new(0.745, 0, 1.657, 0)
+save3.TextScaled = true
+save3.Text = "Save"
+save3.TextColor3 = Color3.new(0, 0, 0)
+save3.Visible = true
+
+local function script13l()
+	local text = target.Text
+	
+	getgenv().AimPart = "" -- For R15 Games: {UpperTorso, LowerTorso, HumanoidRootPart, Head} | For R6 Games: {Head, Torso, HumanoidRootPart}
+	getgenv().AimlockToggleKey = "Y" -- Toggles Aimbot On/Off 
+	getgenv().AimRadius = 50 -- How far away from someones character you want to lock on at
+	getgenv().ThirdPerson = false -- Locking onto someone in your Third Person POV
+	getgenv().FirstPerson = true -- Locking onto someone in your First Person POV
+	getgenv().TeamCheck = false -- Check if Target is on your Team (True means it wont lock onto your teamates, false is vice versa) (Set it to false if there are no teams)
+	getgenv().PredictMovement = true -- Predicts if they are moving in fast velocity (like jumping) so the aimbot will go a bit faster to match their speed 
+	getgenv().PredictionVelocity = 15 -- The speed of the PredictMovement feature 
+	
+	if text == "Head" or text == "head" then
+		getgenv().AimPart = "Head"
+	else
+		text = "Error"
+		getgenv().AimPart = "Head"
+		wait(1)
+		text = "Head"
+		if text == "HumanoidRootPart" or text == "humanoidrootpart" then
+			getgenv().AimPart = "Head"
+		else
+			text = "Error"
+			getgenv().AimPart = "HumanoidRootPart"
+			wait(1)
+			text = "HumanoidRootPart"
+		end
+	end
+	
+	local Players, Uis, RService, SGui = game:GetService"Players", game:GetService"UserInputService", game:GetService"RunService", game:GetService"StarterGui";
+	local Client, Mouse, Camera, CF, RNew, Vec3, Vec2 = Players.LocalPlayer, Players.LocalPlayer:GetMouse(), workspace.CurrentCamera, CFrame.new, Ray.new, Vector3.new, Vector2.new;
+	local Aimlock, MousePressed, CanNotify = true, false, false;
+	local AimlockTarget;
+	getgenv().CiazwareUniversalAimbotLoaded = true
+
+	getgenv().SeparateNotify = function(title, text, icon, time) 
+		SGui:SetCore("SendNotification",{
+			Title = title;
+			Text = text;
+			Duration = time;
+		})
+	end
+
+	getgenv().Notify = function(title, text, icon, time)
+		if CanNotify == true then 
+			if not time or not type(time) == "number" then time = 3 end
+			SGui:SetCore("SendNotification",{
+				Title = title;
+				Text = text;
+				Duration = time;
+			}) 
+		end
+	end
+
+	getgenv().WorldToViewportPoint = function(P)
+		return Camera:WorldToViewportPoint(P)
+	end
+
+	getgenv().WorldToScreenPoint = function(P)
+		return Camera.WorldToScreenPoint(Camera, P)
+	end
+
+	getgenv().GetObscuringObjects = function(T)
+		if T and T:FindFirstChild(getgenv().AimPart) and Client and Client.Character:FindFirstChild("Head") then 
+			local RayPos = workspace:FindPartOnRay(RNew(
+				T[getgenv().AimPart].Position, Client.Character.Head.Position)
+			)
+			if RayPos then return RayPos:IsDescendantOf(T) end
+		end
+	end
+
+	getgenv().GetNearestTarget = function()
+		-- Credits to whoever made this, i didnt make it, and my own mouse2plr function kinda sucks
+		local players = {}
+		local PLAYER_HOLD  = {}
+		local DISTANCES = {}
+		for i, v in pairs(Players:GetPlayers()) do
+			if v ~= Client then
+				table.insert(players, v)
+			end
+		end
+		for i, v in pairs(players) do
+			if v.Character ~= nil then
+				local AIM = v.Character:FindFirstChild("Head")
+				if getgenv().TeamCheck == true and v.Team ~= Client.Team then
+					local DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
+					local RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE)
+					local HIT,POS = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+					local DIFF = math.floor((POS - AIM.Position).magnitude)
+					PLAYER_HOLD[v.Name .. i] = {}
+					PLAYER_HOLD[v.Name .. i].dist= DISTANCE
+					PLAYER_HOLD[v.Name .. i].plr = v
+					PLAYER_HOLD[v.Name .. i].diff = DIFF
+					table.insert(DISTANCES, DIFF)
+				elseif getgenv().TeamCheck == false and v.Team == Client.Team then 
+					local DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude
+					local RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE)
+					local HIT,POS = game.Workspace:FindPartOnRay(RAY, game.Workspace)
+					local DIFF = math.floor((POS - AIM.Position).magnitude)
+					PLAYER_HOLD[v.Name .. i] = {}
+					PLAYER_HOLD[v.Name .. i].dist= DISTANCE
+					PLAYER_HOLD[v.Name .. i].plr = v
+					PLAYER_HOLD[v.Name .. i].diff = DIFF
+					table.insert(DISTANCES, DIFF)
+				end
+			end
+		end
+
+		if unpack(DISTANCES) == nil then
+			return nil
+		end
+
+		local L_DISTANCE = math.floor(math.min(unpack(DISTANCES)))
+		if L_DISTANCE > getgenv().AimRadius then
+			return nil
+		end
+
+		for i, v in pairs(PLAYER_HOLD) do
+			if v.diff == L_DISTANCE then
+				return v.plr
+			end
+		end
+		return nil
+	end
+
+	Uis.InputBegan:Connect(function(Key)
+		if not (Uis:GetFocusedTextBox()) then 
+			if Key.UserInputType == Enum.UserInputType.MouseButton2 then 
+				pcall(function()
+					if MousePressed ~= true then MousePressed = true end 
+					local Target;Target = GetNearestTarget()
+					if Target ~= nil then 
+						AimlockTarget = Target
+						Notify("Legitinality", "Aimlock Target: "..tostring(AimlockTarget), "", 3)
+					end
+				end)
+			end
+			if Key.KeyCode == Enum.KeyCode[AimlockToggleKey] then 
+				Aimlock = not Aimlock
+				Notify("Legitinality", "Aimlock: "..tostring(Aimlock), "", 3)
+			end
+		end
+	end)
+	Uis.InputEnded:Connect(function(Key)
+		if not (Uis:GetFocusedTextBox()) then 
+			if Key.UserInputType == Enum.UserInputType.MouseButton2 then 
+				if AimlockTarget ~= nil then AimlockTarget = nil end
+				if MousePressed ~= false then 
+					MousePressed = false 
+				end
+			end
+		end
+	end)
+
+	RService.RenderStepped:Connect(function()
+		if getgenv().FirstPerson == true and getgenv().ThirdPerson == false then 
+			if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude <= 1 then 
+				CanNotify = true 
+			else 
+				CanNotify = false 
+			end
+		elseif getgenv().ThirdPerson == true and getgenv().FirstPerson == false then 
+			if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1 then 
+				CanNotify = true 
+			else 
+				CanNotify = false 
+			end
+		end
+		if Aimlock == true and MousePressed == true then 
+			if AimlockTarget and AimlockTarget.Character and AimlockTarget.Character:FindFirstChild(getgenv().AimPart) then 
+				if getgenv().FirstPerson == true then
+					if CanNotify == true then
+						if getgenv().PredictMovement == true then 
+							Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + AimlockTarget.Character[getgenv().AimPart].Velocity/PredictionVelocity)
+						elseif getgenv().PredictMovement == false then 
+							Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position)
+						end
+					end
+				elseif getgenv().ThirdPerson == true then 
+					if CanNotify == true then
+						if getgenv().PredictMovement == true then 
+							Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + AimlockTarget.Character[getgenv().AimPart].Velocity/PredictionVelocity)
+						elseif getgenv().PredictMovement == false then 
+							Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position)
+						end
+					end 
+				end
+			end
+		end
+	end)
+end
+
+save3.MouseButton1Click:Connect(script13l)
+
+local script14 = Instance.new("TextLabel")
+
+script14.Parent = scroll
+script14.Name = "script14"
+script14.BackgroundColor3 = Color3.new(1, 1, 1)
+script14.BackgroundTransparency = 0
+script14.Size = UDim2.new(0, 220, 0, 35)
+script14.Position = UDim2.new(0.135, 0, 0.16, 0)
+script14.TextScaled = true
+script14.Text = "Spiner"
+script14.TextColor3 = Color3.new(0, 0, 0)
+script14.Visible = true
+
+local ucs14 = Instance.new("UICorner")
+
+ucs14.Parent = script14
+ucs14.CornerRadius = UDim.new(0, 8)
+
+local control3 = Instance.new("TextBox")
+
+control3.Parent = script14
+control3.Name = "value"
+control3.BackgroundColor3 = Color3.new(1, 1, 1)
+control3.BackgroundTransparency = 0
+control3.Size = UDim2.new(0, 80, 0, 35)
+control3.Position = UDim2.new(-0.159, 0, 1.543, 0)
+control3.Text = ""
+control3.TextColor3 = Color3.new(0, 0, 0)
+control3.PlaceholderText = "1 - 1000"
+control3.PlaceholderColor3 = Color3.new(0.290196, 0.290196, 0.290196)
+control3.Visible = true
+
+local uctb3 = Instance.new("UICorner")
+
+uctb3.Parent = control3
+uctb3.CornerRadius = UDim.new(0, 20)
+
+local start = Instance.new("TextButton")
+
+start.Parent = script14
+start.Name = "start"
+start.BackgroundColor3 = Color3.new(1, 1, 1)
+start.BackgroundTransparency = 0
+start.Size = UDim2.new(0, 92, 0, 35)
+start.Position = UDim2.new(0.241, 0, 1.543, 0)
+start.TextScaled = true
+start.Text = "Start"
+start.TextColor3 = Color3.new(0, 0, 0)
+start.Visible = true
+
+local ucstart = Instance.new("UICorner")
+
+ucstart.Parent = start
+ucstart.CornerRadius = UDim.new(0, 8)
+
+local stop = Instance.new("TextButton")
+
+stop.Parent = script14
+stop.Name = "stop"
+stop.BackgroundColor3 = Color3.new(1, 1, 1)
+stop.BackgroundTransparency = 0
+stop.Size = UDim2.new(0, 92, 0, 35)
+stop.Position = UDim2.new(0.7, 0, 1.543, 0)
+stop.TextScaled = true
+stop.Text = "Stop"
+stop.TextColor3 = Color3.new(0, 0, 0)
+stop.Visible = true
+
+local ucstop = Instance.new("UICorner")
+
+ucstop.Parent = stop
+ucstop.CornerRadius = UDim.new(0, 8)
+
+local function script14l()
+	local speed;
+
+	local plr = game:GetService("Players").LocalPlayer
+	repeat task.wait() until plr.Character
+	local humRoot = plr.Character:WaitForChild("HumanoidRootPart")
+	plr.Character:WaitForChild("Humanoid").AutoRotate = false
+	local velocity = Instance.new("AngularVelocity")
+	velocity.Attachment0 = humRoot:WaitForChild("RootAttachment")
+	velocity.MaxTorque = math.huge
+	velocity.AngularVelocity = Vector3.new(0, speed, 0)
+	velocity.Parent = humRoot
+	velocity.Name = "Spinbot" 
+	
+	local text3 = control2.Text
+
+	if text3 == "" then
+		control3.Text = "Error"
+	else
+		local number3 = tonumber(text3)
+
+		if number3 == nil then
+			control3.Text = "Error"
+		else
+			if number3 > 1000 then
+				speed = 1000
+			elseif number3 < 1 then
+				speed = 1
+			else
+				speed = number3
+			end
+		end
+	end
+	
+	stop.MouseButton1Click:Connect(function()
+		velocity:Destroy()
+		plr.Character:WaitForChild("Humanoid").AutoRotate = true
+	end)
+end
+
+start.MouseButton1Click:Connect(script14l)
