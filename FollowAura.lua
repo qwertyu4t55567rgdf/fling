@@ -4,7 +4,7 @@ local input = game:GetService("UserInputService")
 local run = game:GetService("RunService")
 local plr = plrs.LocalPlayer
 
-local Key = Enum.KeyCode.R
+local Key = getgenv().Key or Enum.KeyCode.R
 
 local meters = 20
 local follow = false
