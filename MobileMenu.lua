@@ -39,6 +39,11 @@ menubutton.Text = "Menu"
 menubutton.TextColor3 = Color3.new(1, 1, 1)
 menubutton.Visible = true
 
+local ucob = Instance.new("UICorner")
+
+ucob.Parent = menubutton
+ucob.CornerRadius = UDim.new(0, 8)
+
 menubutton.MouseButton1Click:Connect(function()
 	if mainframe.Visible == true then
 		mainframe.Visible = false
