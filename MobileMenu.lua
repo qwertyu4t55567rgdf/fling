@@ -28,7 +28,7 @@ ucmf.CornerRadius = UDim.new(0, 8)
 
 local menubutton = Instance.new("TextButton")
 
-menubutton.Parent = game.CoreGui
+menubutton.Parent = gui
 menubutton.Name = "MenuOpen"
 menubutton.BackgroundColor3 = Color3.new(0, 0, 0)
 menubutton.BackgroundTransparency = 0
