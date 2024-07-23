@@ -7,7 +7,7 @@ local SpeedSpin = 0
 
 local gui = Instance.new("ScreenGui")
 
-gui.Parent = game.CoreGui
+gui.Parent = plr.PlayerGui
 gui.Name = "ScriptHub"
 gui.ResetOnSpawn = false
 
@@ -25,6 +25,17 @@ local ucmf = Instance.new("UICorner")
 
 ucmf.Parent = mainframe
 ucmf.CornerRadius = UDim.new(0, 8)
+
+mainframe.Draggable = true
+
+local UIlist = Instance.new("UIListLayout")
+
+UIlist.Parent = mainframe
+
+local UIscale = Instance.new("UIScale")
+
+UIscale.Parent = mainframe
+UIscale.Scale = 0.5
 
 local menubutton = Instance.new("TextButton")
 
@@ -49,50 +60,6 @@ menubutton.MouseButton1Click:Connect(function()
 		mainframe.Visible = false
 	else
 		mainframe.Visible = true
-	end
-end)
-
-local dragging = false
-local dragInput
-local dragStart
-local startPos
-
-local function update(input)
-	local delta = input.Position - dragStart
-	local newPosition = UDim2.new(
-		startPos.X.Scale,
-		startPos.X.Offset + delta.X,
-		startPos.Y.Scale,
-		startPos.Y.Offset + delta.Y
-	)
-
-	local anim1 = tween:Create(mainframe, TweenInfo.new(0.1), {Position = newPosition})
-	anim1:Play()
-end
-
-mainframe.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragStart = input.Position
-		startPos = mainframe.Position
-
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
-end)
-
-mainframe.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement then
-		dragInput = input
-	end
-end)
-
-input.InputChanged:Connect(function(input)
-	if dragging and input == dragInput then
-		update(input)
 	end
 end)
 
