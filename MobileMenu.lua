@@ -28,10 +28,6 @@ ucmf.CornerRadius = UDim.new(0, 8)
 
 mainframe.Draggable = true
 
-local UIlist = Instance.new("UIListLayout")
-
-UIlist.Parent = mainframe
-
 local UIscale = Instance.new("UIScale")
 
 UIscale.Parent = mainframe
