@@ -51,7 +51,7 @@ local function onTouchEnded(touch)
 	isMoving = false
 end
 
-input.TouchBegan:Connect(onTouchBegan)
+input.TouchTap:Connect(onTouchBegan)
 input.TouchMoved:Connect(onTouchMoved)
 input.TouchEnded:Connect(onTouchEnded)
 
