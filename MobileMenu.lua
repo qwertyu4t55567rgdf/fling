@@ -26,37 +26,34 @@ local ucmf = Instance.new("UICorner")
 ucmf.Parent = mainframe
 ucmf.CornerRadius = UDim.new(0, 8)
 
-local userInputService = game:GetService("UserInputService")
+local startX, startY
+local frameStartX, frameStartY
 
-local dragging = false
-local startPos
-local startTouchPos
+local isMoving = false
 
-local function onTouchPan(input, gameProcessed)
-	if input.UserInputState == Enum.UserInputState.Begin then
-		dragging = true
-		startPos = mainframe.Position
-		startTouchPos = input.Position
-	elseif input.UserInputState == Enum.UserInputState.End then
-		dragging = false
-	end
+local function onTouchBegan(touch)
+	startX, startY = touch.Position.X, touch.Position.Y
+
+	frameStartX, frameStartY = mainframe.Position.X.Offset, mainframe.Position.Y.Offset
+
+	isMoving = true
 end
 
-local function onTouchPanMove(input, gameProcessed)
-	if dragging then
-		local delta = input.Position - startTouchPos
-		mainframe.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-	end
+local function onTouchMoved(touch)
+	if not isMoving then return end
+
+	local offsetX, offsetY = touch.Position.X - startX, touch.Position.Y - startY
+
+	mainframe.Position = UDim2.new(0, frameStartX + offsetX, 0, frameStartY + offsetY)
 end
 
-userInputService.TouchPan:Connect(onTouchPan)
-userInputService.TouchPan:Connect(onTouchPanMove)
+local function onTouchEnded(touch)
+	isMoving = false
+end
 
+input.TouchBegan:Connect(onTouchBegan)
+input.TouchMoved:Connect(onTouchMoved)
+input.TouchEnded:Connect(onTouchEnded)
 
 local UIscale = Instance.new("UIScale")
 
@@ -260,23 +257,8 @@ local function script3l()
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
 	local rootPart = character:WaitForChild("HumanoidRootPart")
-	local camera = game.Workspace.CurrentCamera
 
 	local wallWalking = false
-	local run = game:GetService("RunService")
-
-	local flybutton = Instance.new("TextButton")
-	
-	flybutton.Parent = gui
-	flybutton.Name = "fly"
-	flybutton.BackgroundColor3 = Color3.new(0, 0, 0)
-	flybutton.BackgroundTransparency = 0
-	flybutton.Size = UDim2.new(0, 42, 0, 42)
-	flybutton.Position = UDim2.new(0.798, 0, 0.411, 0)
-	flybutton.TextSize = 25
-	flybutton.Text = "Fly"
-	flybutton.TextColor3 = Color3.new(1, 1, 1)
-	flybutton.Visible = true
 
 	local function toggleWallWalk()
 		wallWalking = not wallWalking
@@ -289,30 +271,52 @@ local function script3l()
 		end
 	end
 
-	flybutton.MouseButton1Click:Connect(function()
-		toggleWallWalk()
+	local flybutton = Instance.new("TextButton")
+
+	flybutton.Parent = gui
+	flybutton.Name = "fly"
+	flybutton.BackgroundColor3 = Color3.new(0, 0, 0)
+	flybutton.BackgroundTransparency = 0
+	flybutton.Size = UDim2.new(0, 42, 0, 42)
+	flybutton.Position = UDim2.new(0.798, 0, 0.411, 0)
+	flybutton.TextSize = 25
+	flybutton.Text = "Fly"
+	flybutton.TextColor3 = Color3.new(1, 1, 1)
+	flybutton.Visible = true
+
+	local ucfb = Instance.new("UICorner")
+
+	ucfb.Parent = flybutton
+	ucfb.CornerRadius = UDim.new(8, 8)
+
+	flybutton.Touched:Connect(function(hit)
+		if hit.Parent == player.Character then
+			toggleWallWalk()
+		end
 	end)
 
-	local function onTouchMove(input)
+	run.RenderStepped:Connect(function()
 		if wallWalking then
+			local camera = game.Workspace.CurrentCamera
+			local direction = camera.CFrame.LookVector
 			local moveDirection = Vector3.new(0, 0, 0)
-			if input.Position.X < input.TouchStart.X then
-				moveDirection = moveDirection - camera.CFrame.RightVector
-			elseif input.Position.X > input.TouchStart.X then
-				moveDirection = moveDirection + camera.CFrame.RightVector
-			end
-
-			if input.Position.Y < input.TouchStart.Y then
-				moveDirection = moveDirection + camera.CFrame.LookVector
-			elseif input.Position.Y > input.TouchStart.Y then
-				moveDirection = moveDirection - camera.CFrame.LookVector
+			if game:GetService("UserInputService"):IsTouching(Enum.UserInputType.Touch) then
+				local touch = game:GetService("UserInputService"):GetTouchInput()
+				local swipeDirection = touch.SwipeDirection
+				if swipeDirection == Enum.SwipeDirection.Up then
+					moveDirection = moveDirection + direction
+				elseif swipeDirection == Enum.SwipeDirection.Down then
+					moveDirection = moveDirection - direction
+				elseif swipeDirection == Enum.SwipeDirection.Left then
+					moveDirection = moveDirection - camera.CFrame.RightVector
+				elseif swipeDirection == Enum.SwipeDirection.Right then
+					moveDirection = moveDirection + camera.CFrame.RightVector
+				end
 			end
 
 			rootPart.Velocity = moveDirection * 30
 		end
-	end
-
-	input.TouchMoved:Connect(onTouchMove)
+	end)
 end
 
 load3.MouseButton1Click:Connect(script3l)
