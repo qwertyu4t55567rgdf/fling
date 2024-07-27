@@ -26,7 +26,37 @@ local ucmf = Instance.new("UICorner")
 ucmf.Parent = mainframe
 ucmf.CornerRadius = UDim.new(0, 8)
 
-mainframe.Draggable = true
+local userInputService = game:GetService("UserInputService")
+
+local dragging = false
+local startPos
+local startTouchPos
+
+local function onTouchPan(input, gameProcessed)
+	if input.UserInputState == Enum.UserInputState.Begin then
+		dragging = true
+		startPos = mainframe.Position
+		startTouchPos = input.Position
+	elseif input.UserInputState == Enum.UserInputState.End then
+		dragging = false
+	end
+end
+
+local function onTouchPanMove(input, gameProcessed)
+	if dragging then
+		local delta = input.Position - startTouchPos
+		mainframe.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end
+
+userInputService.TouchPan:Connect(onTouchPan)
+userInputService.TouchPan:Connect(onTouchPanMove)
+
 
 local UIscale = Instance.new("UIScale")
 
@@ -230,8 +260,23 @@ local function script3l()
 	local character = player.Character or player.CharacterAdded:Wait()
 	local humanoid = character:WaitForChild("Humanoid")
 	local rootPart = character:WaitForChild("HumanoidRootPart")
+	local camera = game.Workspace.CurrentCamera
 
 	local wallWalking = false
+	local run = game:GetService("RunService")
+
+	local flybutton = Instance.new("TextButton")
+	
+	flybutton.Parent = gui
+	flybutton.Name = "fly"
+	flybutton.BackgroundColor3 = Color3.new(0, 0, 0)
+	flybutton.BackgroundTransparency = 0
+	flybutton.Size = UDim2.new(0, 42, 0, 42)
+	flybutton.Position = UDim2.new(0.798, 0, 0.411, 0)
+	flybutton.TextSize = 25
+	flybutton.Text = "Fly"
+	flybutton.TextColor3 = Color3.new(1, 1, 1)
+	flybutton.Visible = true
 
 	local function toggleWallWalk()
 		wallWalking = not wallWalking
@@ -244,33 +289,30 @@ local function script3l()
 		end
 	end
 
-	input.InputBegan:Connect(function(input, isProcessed)
-		if not isProcessed and input.KeyCode == Enum.KeyCode.Z then
-			toggleWallWalk()
-		end
+	flybutton.MouseButton1Click:Connect(function()
+		toggleWallWalk()
 	end)
 
-	run.RenderStepped:Connect(function()
+	local function onTouchMove(input)
 		if wallWalking then
-			local camera = game.Workspace.CurrentCamera
-			local direction = camera.CFrame.LookVector
 			local moveDirection = Vector3.new(0, 0, 0)
-			if input:IsKeyDown(Enum.KeyCode.W) then
-				moveDirection = moveDirection + direction
-			end
-			if input:IsKeyDown(Enum.KeyCode.S) then
-				moveDirection = moveDirection - direction
-			end
-			if input:IsKeyDown(Enum.KeyCode.A) then
+			if input.Position.X < input.TouchStart.X then
 				moveDirection = moveDirection - camera.CFrame.RightVector
-			end
-			if input:IsKeyDown(Enum.KeyCode.D) then
+			elseif input.Position.X > input.TouchStart.X then
 				moveDirection = moveDirection + camera.CFrame.RightVector
+			end
+
+			if input.Position.Y < input.TouchStart.Y then
+				moveDirection = moveDirection + camera.CFrame.LookVector
+			elseif input.Position.Y > input.TouchStart.Y then
+				moveDirection = moveDirection - camera.CFrame.LookVector
 			end
 
 			rootPart.Velocity = moveDirection * 30
 		end
-	end)
+	end
+
+	input.TouchMoved:Connect(onTouchMove)
 end
 
 load3.MouseButton1Click:Connect(script3l)
