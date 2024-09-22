@@ -24,6 +24,6 @@ end)
 event:FireServer(true)
 
 queue_on_teleport([[
-    repeat wait() until game:IsLoaded()
+    wait(10)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/qwertyu4t55567rgdf/fling/refs/heads/main/dupe.lua"))()
 ]])
