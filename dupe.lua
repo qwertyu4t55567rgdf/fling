@@ -1,1 +1,1 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/qwertyu4t55567rgdf/fling/refs/heads/main/dupe.lua'))()
+lol
